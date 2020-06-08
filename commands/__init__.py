@@ -1,5 +1,5 @@
 from discord.message import Message,Member
-from discord import TextChannel
+
 
 commands = []
 
@@ -9,7 +9,7 @@ class Command:
         self.commandname = commandname
         self.description = description
 
-    def run(self, args, user:Member):
+    def run(self, message:Message,args):
         pass
 
 
@@ -21,7 +21,7 @@ def register_command(command):
 def interpreter(message: Message) -> str:
     global commands
 
-    args = str(message.content).split(" ")
+    args = list(str(message.content).split(" "))
     executed_command = args[0].replace("*", "", 1)
 
     response = "Befehl nicht gefunden."
@@ -31,6 +31,6 @@ def interpreter(message: Message) -> str:
 
     for command in commands:
         if command.commandname == executed_command:
-            response = command.run(args,message.author)
+            response = command.run(message=message,args=args)
 
     return response
